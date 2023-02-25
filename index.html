@@ -1,178 +1,770 @@
-<!-- Stylish Style -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Blorb Simulation</title>
+  <style>
 
+    body {
+      background-color: white;
+    }
+
+    .feeding-zone {
+      background-color: white;
+      width: 500px;
+      height: 500px;
+      border: 5px solid black;
+      border-radius: 20px;
+      margin: auto;
+      position: absolute;
+      top: 0; bottom: 0; left: 0; right: 0;
+    }
+
+    .food {
+      background-color: greenyellow;
+      border-radius: 50%;
+      height: 25px;
+      width: 25px;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .blorb-shell {
+      background-color: rgb(255, 255, 255);
+      border-radius: 50%;
+      height: 50px;
+      width: 50px;
+      position: absolute;
+      top: 200px;
+      right: -1000px;
+      z-index: 2;
+      animation: blink 0s infinite;
+    }
+
+    .blorb-shell:after {
+      content: "O_O";
+      color: #000;
+      font-size: 15px;
+      font-family: "Yuanti SC",serif;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: blink 3s infinite;
+    }
+
+    .reset {
+      color: #ff0000;
+    }
+
+    @keyframes blink {
+      50% {
+        content: '-_-'; /* switch to the other face */
+      }
+    }
+
+  </style>
+</head>
+<body>
+<button id="1" onclick="runCycle()" class="day-button">Start</button>
 <style>
-    .textbox {
-     padding: 20px 30px;
-     font-size: 24px;
-     font-weight: bold;
-     border: none;
-     border-radius: 5px;
-     border: 2px solid black;
-
-    }
-    .container {
-     display: flex;
-     flex-wrap: wrap;
-     justify-content: center;
-     grid-template-columns: repeat(2, 1fr);
-    }
+  .day-button {
+    background-color: #25b600;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    height: 23px;
+    width: 75px;
+  }
 </style>
+<button id="2" onclick="endCycle()" class="night-button">Night</button>
+<style>
+  .night-button {
+    background-color: #e8e8e8;
+    color: #bebebe;
+    border: none;
+    border-radius: 5px;
+    height: 23px;
+    width: 75px;
+  }
+</style>
+</body>
+<head>
+  <title>Dropdown Menu Example</title>
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
 
-<!-- Wonderful Table -->
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      z-index: 5;
+      background-color: #e8e8e8;
+      padding: 16px;
+      border: 2px solid #ababab;
+      border-radius: 5px;
+    }
 
-<table id="Table">
-    <div>Enter Alleles Below!</div>
-    <input type="text" id="userInput">
-    <input type="text" id="userInput2">
-    <button onclick="createSquares()">Calculate</button>
-
-    <div id="container" class="container" ></div>
-</table>
-
-<!-- Gorgeous Script -->
-
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div class="dropdown">
+  <button class="dropdown-button">Change Settings</button>
+  <div class="dropdown-content">
+    <label for="food">Food Per Day:</label>
+    <input type="number" id="food" name="food" value="6">
+    <br><br>
+    <button onclick="addBlueBlorb()">Add Blue Blorb</button>
+    <br><br>
+    <button onclick="addRedBlorb()">Add Red Blorb</button>
+  </div>
+</div>
+</body>
+<button onclick="reset()" class="red-button">Reset</button>
+<style>
+  .red-button {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    height: 23px;
+    width: 75px;
+  }
+  .dropdown-button {
+    background-color: #ababab;
+    color: #4d4d4d;
+    border: none;
+    border-radius: 5px;
+    height: 23px;
+    width: 125px;
+  }
+</style>
+<head>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+    }
+    .text_box {
+      position: relative;
+      width: 300px;
+      height: 600px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+    .close-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 15%;
+      text-align: center;
+      font-family: "Yuanti SC",serif;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 18px;
+      cursor: pointer;
+    }
+  </style>
+  <title>Exclusion Principle:</title>
+</head>
+<body>
+<div class="container">
+  <div class="text_box">
+    <div class="close-btn">X</div>
+    <p><strong>Exclusion Principle:</strong></p>
+    <p>No two species is able to live in the exact same niche; given enough time, one species would do better than the other.</p>
+    <p><strong>Carrying Capacity:</strong></p>
+    <p>You would notice that the amount of blorbs don't grow much larger than then the amount of food that is available; this is because there is not enough food to feed the increase of blorbs.</p>
+    <div id="blorbs-container">
+      - Red Blorbs: <span id="red-blorbs">0</span><br>
+      - Blue Blorbs: <span id="blue-blorbs">0</span><br>
+      - Deaths: <span id="death-count">0</span><br>
+      - Day: <span id="day-count">0</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
 <script>
-    function allUppercase(str) {
-        return /^[A-Z]+$/.test(str);
+
+  const maxBorder = 800;
+  const minBorder = 100;
+  let foodPerDay;
+  let amountStartingBlorbsA = 1;
+  let amountStartingBlorbsB = 1;
+  let blorbsA = [];
+  let blorbsB = [];
+  let foods = [];
+
+  let redBlorbs = 0;
+  let blueBlorbs = 0;
+  let deathCount = 0;
+  let dayCount = 1;
+
+  // <div id="feeding-zone" class="feeding-zone"></div>
+
+  //================[ DROPDOWN ]================//
+
+  const foodInput = document.getElementById("food");
+  const closeButton = document.querySelector('.close-btn');
+  const textBox = document.querySelector('.text_box');
+  let redBlorbsEl = document.getElementById('red-blorbs');
+  let blueBlorbsEl = document.getElementById('blue-blorbs');
+  const deathCountEl = document.getElementById('death-count');
+  const dayCountEl = document.getElementById('day-count');
+
+  foodPerDay = parseInt(foodInput.value);
+  blueBlorbs = amountStartingBlorbsA;
+  redBlorbs = amountStartingBlorbsB;
+
+  foodInput.addEventListener("input", function() {
+    foodPerDay = parseInt(foodInput.value);
+  });
+
+  closeButton.addEventListener('click', () => {
+    textBox.style.display = 'none';
+  });
+
+  function addBlueBlorb() {
+    createBlorb('blue', randomLocation(), 'A')
+    blueBlorbs++;
+    updateStats();
+  }
+
+  function addRedBlorb() {
+    createBlorb('red', randomLocation(), 'B')
+    redBlorbs++;
+    updateStats();
+  }
+
+  function updateStats() {
+    redBlorbsEl.textContent = redBlorbs.toString();
+    blueBlorbsEl.textContent = blueBlorbs.toString();
+    deathCountEl.textContent = deathCount.toString();
+    dayCountEl.textContent = (dayCount - 1).toString();
+  }
+
+  updateStats();
+
+  //================[ BLORB CLASS ]================//
+
+  class Entity {
+    SELF;
+    COLOR;
+    LOCATION;
+
+    constructor(color, loc) {
+      this.COLOR = color;
+      this.LOCATION = loc;
+      this.SELF = document.createElement('div');
+      this.SELF.style.left = loc.getX() + 'px';
+      this.SELF.style.top = loc.getY() + 'px';
+      this.SELF.style.backgroundColor = color;
     }
 
-    function hasUppercase(string) {
-        return string.match(/[A-Z]/);
+    setLocation(loc) {
+      this.SELF.style.left = loc.getX() + 'px';
+      this.SELF.style.top = loc.getY() + 'px';
     }
 
-    function dominance(str) {
-        if (hasUppercase(str)) {
-            return str.toUpperCase();
+    getLocation() {
+      return this.LOCATION;
+    }
+
+    getColor() {
+      return this.COLOR;
+    }
+
+    getEntity() {
+      return this.SELF;
+    }
+
+  }
+
+  class Food extends Entity {
+
+    e = false;
+
+    constructor(loc) {
+      super('greenyellow', loc);
+      this.SELF.classList.add('food');
+      foods.push(this);
+    }
+
+    eaten() {
+      return this.e;
+    }
+
+    setEaten(bool) {
+      if (bool) {
+        this.SELF.remove();
+      }
+      this.e = bool;
+    }
+
+    getFood() {
+      return this.SELF;
+    }
+
+  }
+
+  class Blorb extends Entity {
+
+    SPEED;
+    GROUP;
+    fed = false;
+    dead = false;
+    MIDDLE_OF_MOVING = false;
+
+    constructor(color, loc, group) {
+      super(color, loc);
+      this.SELF.classList.add('blorb-shell');
+      this.GROUP = group;
+      this.SPEED = 5;
+      if (group === 'A') {
+        blorbsA.push(this);
+      }
+      else if (group === 'B') {
+        blorbsB.push(this);
+      }
+  }
+
+    moveTo(newLocation) {
+      this.LOCATION = newLocation;
+      move(this.SELF, this.LOCATION.getX(), this.LOCATION.getY(), this.SPEED)
+    }
+
+    getBlorb() {
+      return this.SELF;
+    }
+
+    getGroup() {
+      return this.GROUP;
+    }
+
+    getSpeed() {
+      return this.SPEED;
+    }
+
+    setSpeed(speed) {
+      this.SPEED = speed;
+    }
+
+    setFed(bool) {
+      this.fed = bool;
+    }
+
+    isMoving() {
+      return this.MIDDLE_OF_MOVING
+    }
+
+    isFed() {
+      return this.fed;
+    }
+
+    isDead() {
+      return this.dead;
+    }
+
+    die() {
+
+      const instance = this;
+
+      if (!this.isDead()) {
+        instance.SELF.style.backgroundColor = "gray";
+        instance.dead = true;
+        shakeElement(instance.SELF)
+        setTimeout(function () {
+          instance.getBlorb().remove();
+        }, 1500);
+      }
+    }
+
+    eat(food) {
+
+      if (this.isDead()) {
+        return;
+      }
+
+      let instance = this;
+      this.moveTo(food.getLocation());
+      this.MIDDLE_OF_MOVING = true;
+
+      this.SELF.addEventListener('arrived', arrivedHandler);
+
+      function arrivedHandler() {
+        instance.getBlorb().removeEventListener('arrived', arrivedHandler);
+        if (!food.eaten()) {
+          food.setEaten(true);
+          instance.fed = true;
+          instance.MIDDLE_OF_MOVING = false;
         } else {
-            return str;
+          instance.eat(getNearestFood(instance));
         }
+      }
+
     }
 
-    function createTable(data) {
-    // Remove any existing table element from the document
-        var oldTable = document.querySelector('table');
-        if (oldTable) {
-            oldTable.parentNode.removeChild(oldTable);
+    isSearching = false;
+
+    searchContinuouslyTillEaten() {
+
+      if (this.isDead() || this.isSearching) {
+        return;
+      }
+
+      this.isSearching = true;
+      let timerID = null;
+      let instance = this;
+
+      function THIS() {
+        if (instance.isFed()) {
+          clearInterval(timerID);
+          instance.MIDDLE_OF_MOVING = false;
+          instance.isSearching = false;
+        } else {
+          if (!instance.isMoving()) {
+            instance.eat(getNearestFood(instance));
+          }
         }
+      }
 
-        var size = Math.ceil(Math.sqrt(data.length));
-        var table = document.createElement('table');
-        table.border = "1";
-        var tableBody = document.createElement('tbody');
+      // 1000 mil-sec = 1 sec
+      timerID = setInterval(THIS, 100);
 
-        for (var i = 0; i < size; i++) {
-            var row = document.createElement('tr');
+    }
+  }
 
-            for (var j = 0; j < size; j++) {
-                var cell = document.createElement('td');
-                var index = i * size + j;
-                if (index < data.length) {
-                    cell.innerHTML = data[index];
-                }
-                row.appendChild(cell);
-            }
+  class Location {
 
-            tableBody.appendChild(row);
-        }
+    x;
+    y;
 
-        table.appendChild(tableBody);
-        document.body.appendChild(table);
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
     }
 
-    function handleIncorrectInput(ErrorMessage) {
-        // Remove all elements from the page
-        var elements = document.querySelectorAll('body *');
-        elements.forEach(function(element) {
-            element.parentNode.removeChild(element);
-        });
-
-        // Display a message saying "Incorrect Input!"
-        var message = document.createElement('div');
-        message.innerHTML = ErrorMessage;
-        document.body.appendChild(message);
-        // Wait 2 seconds before reloading the page
-        setTimeout(function() {
-            location.reload();
-        }, 2000);
+    setX(x) {
+      this.x = x;
     }
 
-    function foundErrorString(str) {
-        for (let i = 0; i < str.length; i += 2) {
-            var head = str.substring(i, i + 1);
-            var feet = str.substring(i + 1, i + 2);
-            if (head.toUpperCase() != feet.toUpperCase()) {
-                return true;
-            }
-        }
-        return false;
+    getX() {
+      return this.x;
     }
 
-    function createSquares() {
-        // Get the user input
-        var userInput = document.getElementById("userInput").value;
-        var userInput2 = document.getElementById("userInput2").value;
-
-        if (userInput.length != userInput2.length) {
-            handleIncorrectInput("Your two alleles aren't the same!");
-            return;
-        }
-        if (!((userInput.length % 2) == 0)) {
-            handleIncorrectInput("Your alleles aren't right!");
-            return;
-        }
-        console.log("Input" + userInput)
-
-        if (foundErrorString(userInput)) {
-            handleIncorrectInput("No Codominance or Incomplete Dominance Allowed");
-            return;
-        }
-
-        // if cannot be divided by 2 then say it doesn't work!!
-        // If userInput.length != userInput2.length then say it doesn't work either!!
-
-        var genotypes = [];
-        var genotypesText = "";
-
-        // create table header
-        genotypes.push(" ");
-        for (let i = 0; i < userInput2.length; i++) {
-            genotypes.push(userInput2.substring(i, i+1));
-        }
-
-        for (let i = 0; i < userInput.length; i++) {
-            for (let j = 0; j < userInput2.length; j++) {
-                var thusband = userInput.substring(i, i+1);
-                var twife = userInput2.substring(j, j+1);
-
-                if (j == 0) {
-                   genotypes.push(thusband);
-                }
-
-                genotypes.push(thusband + twife);
-                genotypesText += thusband + twife + ', ';
-            }
-        }
-
-        var phenotypes = '';
-        for (let i = 0; i < userInput.length; i++) {
-            for (let j = 0; j < userInput2.length; j++) {
-                var thusband = userInput.substring(i, i+1);
-                var twife = userInput2.substring(j, j+1);
-                var result = dominance(thusband + twife) + ', ';
-                if (!phenotypes.includes(result)) {
-                    phenotypes += dominance(thusband + twife) + ', ';
-                }
-            }
-        }
-
-        // Design
-        var squaresHTML = '<div class="textbox">' + 'Possible Phenotypes: ' + phenotypes + '</div>';
-
-        // Insert the squares into the "container" element
-        document.getElementById("container").innerHTML = squaresHTML;
-        createTable(genotypes);
-
-        // ABABABABABABAB
+    setY(y) {
+      this.y = y;
     }
- 
+
+    getY() {
+      return this.y;
+    }
+
+    getDistanceFrom(location) {
+      // FORM d = r/(x - x) ^ 2 + (y - y) ^ 2
+      const x1 = this.x;
+      const y1 = this.y;
+      const x2 = location.getX();
+      const y2 = location.getY();
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+    }
+
+  }
+
+  class Mates {
+
+    hasReproduced = false;
+    male;
+    female;
+
+    constructor(male, female) {
+      this.male = male;
+      this.female = female;
+    }
+
+    getMale() {
+      return this.male;
+    }
+
+    getFemale() {
+      return this.female;
+    }
+
+    reproduce() {
+      this.hasReproduced = true;
+      let instance = this;
+      const blorb = this.getMale().getBlorb();
+      this.getMale().moveTo(this.getFemale().getLocation())
+      blorb.addEventListener('arrived', arrivedHandler);
+
+      function arrivedHandler() {
+        const loc = instance.getFemale().getLocation();
+        const color = instance.getFemale().getColor();
+        const group = instance.getFemale().getGroup();
+        blorb.removeEventListener('arrived', arrivedHandler);
+        createBlorb(color, loc, group);
+        if (color === 'blue') {
+          blueBlorbs++;
+        }
+        else if (color === 'red') {
+          redBlorbs++;
+        }
+        updateStats();
+      }
+    }
+
+  }
+
+  //==================[ CREATION ]==================//
+
+  function createBlorb(color, location, group) {
+    const blorb = new Blorb(color, location, group);
+    document.body.appendChild(blorb.getBlorb());
+    return blorb;
+  }
+
+  function createFood(location) {
+    let food = new Food(location);
+    document.body.appendChild(food.getFood());
+    return food;
+  }
+
+  //================[ CYCLE PHASES ]================//
+
+  let cycleRunning = false;
+
+  function placeFood() {
+    for (let i = 0; i < foodPerDay; i++) {
+      createFood(randomLocation())
+    }
+  }
+
+  function placeBlorbs() {
+    for (let i = 0; i < amountStartingBlorbsA; i++) {
+      createBlorb('blue', randomLocation(), 'A')
+    }
+    for (let i = 0; i < amountStartingBlorbsB; i++) {
+      createBlorb('red', randomLocation(), 'B')
+    }
+  }
+
+  placeFood();
+  placeBlorbs();
+
+  function runCycle() {
+
+    if (cycleRunning) {
+      return;
+    }
+
+    if (dayCount > 1) {
+      updateStats();
+      placeFood();
+    } else {
+      document.getElementById("1").textContent = "Day";
+    }
+
+    dayCount++;
+    cycleRunning = true;
+    disableButton("1");
+    enableButton("2");
+
+    document.body.style.backgroundColor = 'white';
+    blorbsA.forEach((b) => {
+      b.fed = false;
+      b.searchContinuouslyTillEaten()
+    });
+    blorbsB.forEach((b) => {
+      b.fed = false;
+      b.searchContinuouslyTillEaten()
+    });
+  }
+
+  function enableButton(id) {
+    document.getElementById(id).style.backgroundColor = "#25b600";
+    document.getElementById(id).style.color = '#fff';
+  }
+
+  function disableButton(id) {
+    document.getElementById(id).style.backgroundColor = "#e8e8e8";
+    document.getElementById(id).style.color = '#bebebe';
+  }
+
+  function endCycle() {
+    if (!cycleRunning) {
+      return;
+    }
+
+    cycleRunning = false;
+    disableButton("2");
+    enableButton("1");
+
+    blorbsA.forEach((b) => {
+      if (!b.isFed() && !b.isDead()) {
+        b.die();
+        blueBlorbs--;
+        deathCount++;
+      }
+    });
+    blorbsB.forEach((b) => {
+      if (!b.isFed() && !b.isDead()) {
+        b.die();
+        redBlorbs--;
+        deathCount++;
+      }
+    });
+    updateStats();
+    document.body.style.backgroundColor = '#181848';
+    reproduceAll();
+  }
+
+
+  //================[ REPRODUCTION ]================//
+
+  function reproduceAll() {
+    reproduce(blorbsA);
+    reproduce(blorbsB);
+  }
+
+  function reproduce(blorbList) {
+
+    let mates = [];
+    let match = null;
+
+    blorbList.forEach((b) => {
+      if (!(b.isDead() && !(b.isFed()))) {
+        if (match != null) {
+          mates.push(new Mates(match, b));
+        } else {
+          match = b;
+        }
+      }
+    })
+
+    if (mates.length > 0) {
+      mates.forEach((m) => {
+        m.reproduce();
+      })
+    }
+
+  }
+
+  //==================[ FOOD ]==================//
+
+  function getNearestFood(blorb) {
+
+    let nearestFood = foods[0];
+    let nearestDistance = Number.MAX_SAFE_INTEGER;
+
+    for (let food of foods) {
+      if (!food.eaten()) {
+        const distance = food.getLocation().getDistanceFrom(blorb.getLocation());
+        if (distance < nearestDistance) {
+          nearestFood = food;
+          nearestDistance = distance;
+        }
+      }
+    }
+
+    return nearestFood;
+  }
+
+  //===================[ MOVEMENT ]==================//
+
+  function move(element, x, y, sec) {
+
+    let timerID = null;
+    let ofX = element.getBoundingClientRect().x;
+    let ofY = element.getBoundingClientRect().y;
+    let distanceX = x - ofX;
+    let distanceY = y - ofY;
+
+    timerID = setInterval(moving, sec);
+
+    function moving() {
+      if (
+              Math.abs(element.getBoundingClientRect().x - ofX) >= Math.abs(distanceX) &&
+              Math.abs(element.getBoundingClientRect().y - ofY) >= Math.abs(distanceY))
+      {
+        clearInterval(timerID);
+        element.dispatchEvent(new CustomEvent('arrived'));
+      } else {
+        let dx = distanceX / Math.abs(distanceX);
+        let dy = distanceY / Math.abs(distanceY);
+        element.style.left = (element.getBoundingClientRect().x + dx) + "px";
+        element.style.top = (element.getBoundingClientRect().y + dy) + "px";
+      }
+    }
+  }
+
+
+  //===================[ METHODS ]===================//
+
+  function shakeElement(shake) {
+
+    let intervalId;
+    let shakeCount = 0;
+    const maxShakes = 350;
+    const shakeDistance = 5;
+
+    function shakeElement() {
+      if (shakeCount >= maxShakes) {
+        clearInterval(intervalId);
+        shake.style.transform = 'translate(0, 0)';
+        return;
+      }
+
+      const x = Math.random() * shakeDistance - (shakeDistance / 2);
+      const y = Math.random() * shakeDistance - (shakeDistance / 2);
+      shake.style.transform = `translate(${x}px, ${y}px)`;
+
+      shakeCount++;
+    }
+
+    intervalId = setInterval(shakeElement, 1);
+  }
+
+  function getDistanceBetween(loc1, loc2) {
+    // FORM d = r/(x - x) ^ 2 + (y - y) ^ 2
+    const x1 = loc1.getX();
+    const y1 = loc1.getY();
+    const x2 = loc2.getX();
+    const y2 = loc2.getY();
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+  }
+
+  function print(message) {
+    console.log(message);
+  }
+  function randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function randomLocation() {
+    return new Location(randomNumber(minBorder, maxBorder), randomNumber(minBorder, maxBorder))
+  }
+
+  //document.addEventListener('click', function(event) {
+  //  console.log('Mouse clicked at position:', event.clientX, event.clientX);
+  //});
+
+  function reset() {
+    location.reload();
+  }
+
 </script>
