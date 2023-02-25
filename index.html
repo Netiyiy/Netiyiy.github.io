@@ -650,6 +650,7 @@
       if (!(b.isDead() && !(b.isFed()))) {
         if (match != null) {
           mates.push(new Mates(match, b));
+          match = null;
         } else {
           match = b;
         }
