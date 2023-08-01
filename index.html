@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <style>
+    body {
+      background-color: #FDFD96;
+      margin: 0;
+    }
+    .block {
+      width: 100%;
+      height: 20px;
+      background-color: #77dd77;
+    }
+    .text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #000000;
+      padding-top: 0.5px;
+      padding-left: 10px;
+      font-size: 18px;
+      font-family: monospace;
+    }
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+      font-family: monospace;
+    }
+    .login-container input {
+      margin-bottom: 10px;
+      padding: 5px;
+      font-family: monospace;
+    }
+    .login-container button {
+      padding: 10px 20px;
+      background-color: #77dd77;
+      border: none;
+      cursor: pointer;
+      font-family: monospace;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="block"></div>
+  <div class="text"> Walled </div>
+  <div class="login-container">
+  
+    <label for="username">Username</label>
+    <input type="text" id="username" autocomplete="off">
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="off">
+
+    <button onclick="button1Clicked()" id = "button1">Login</button>
+    <button onclick="button2Clicked()" id = "button2" style="padding: 6px 12px; font-size: 10px;" >Sign Up</button>
+  </div>
+</body>
+  
+<script>
+  let user = null;
+  let pass = null;
+  let isLogin = true;
+  const userInput = document.getElementById("username");
+  const passInput = document.getElementById("password");
+  const button1 = document.getElementById("button1");
+  const button2 = document.getElementById("button2");
+  
+  function login() {
+    swapButtons();
+  }
+
+  function signUp() {
+    swapButtons();
+  }
+
+  function swapButtons() {
+    let a = document.getElementById("button1").textContent;
+    let b = document.getElementById("button2").textContent;
+    document.getElementById("button1").textContent = b;
+    document.getElementById("button2").textContent = a;
+    isLogin = !isLogin;
+    if (!isLogin) {
+      passInput.type = "text";
+    } else {
+      passInput.type = "password";
+    }
+  }
+
+  function button1Clicked() {
+    if (isLogin) {
+      const loginContainer = document.querySelector('.login-container');
+      loginContainer.remove();
+    }
+  }
+
+  function button2Clicked() {
+    swapButtons();
+  }
+
+</script>
+  
+</html>
