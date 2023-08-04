@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
   <style>
     body {
@@ -22,6 +21,7 @@
       font-size: 18px;
       font-family: monospace;
     }
+    
     .login-container {
       display: flex;
       flex-direction: column;
@@ -42,40 +42,63 @@
       font-family: monospace;
       margin-bottom: 10px;
     }
+
+    .start-button {
+      padding: 20px 40px;
+      background-color: #77dd77;
+      border: none;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 20px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+   .game-tread {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 20px;
+    background-color: #77dd77;
+  }
+  .game-blockType1 {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      display: inline-block;
+      margin-right: 5px;
+  }
+    
   </style>
 </head>
 <body>
   <div class="block"></div>
   <div class="text"> Walled </div>
   <div class="login-container">
-  
     <label for="username">Username</label>
     <input type="text" id="username" autocomplete="off">
     <label for="password">Password</label>
     <input type="password" id="password" autocomplete="off">
-
     <button onclick="button1Clicked()" id = "button1">Login</button>
-    <button onclick="button2Clicked()" id = "button2" style="padding: 6px 12px; font-size: 10px;" >Sign Up</button>
+    <button onclick="button2Clicked()" id = "button2" style="padding: 6px 12px; font-size: 10px;">Sign Up</button>
   </div>
 </body>
   
 <script>
+
+  //=====[ Login ]======//
+  
   let user = null;
   let pass = null;
   let isLogin = true;
+
   const userInput = document.getElementById("username");
   const passInput = document.getElementById("password");
-  const button1 = document.getElementById("button1");
-  const button2 = document.getElementById("button2");
   
-  function login() {
-    swapButtons();
-  }
-
-  function signUp() {
-    swapButtons();
-  }
-
   function swapButtons() {
     let a = document.getElementById("button1").textContent;
     let b = document.getElementById("button2").textContent;
@@ -91,8 +114,8 @@
 
   function button1Clicked() {
     if (isLogin) {
-      const loginContainer = document.querySelector('.login-container');
-      loginContainer.remove();
+      closeLoginScreen();
+      openStartScreen();
     }
   }
 
@@ -100,6 +123,42 @@
     swapButtons();
   }
 
+  function closeLoginScreen() {
+    const lc = document.querySelector('.login-container');
+    lc.remove();
+  }
+
+  //=====[ Start ]======//
+
+  function openStartScreen() {
+    const button = document.createElement('button');
+    button.classList.add('start-button');
+    button.textContent = "Start";
+    document.body.appendChild(button);
+    const startButton = document.querySelector('.start-button');
+    startButton.addEventListener('click', startClickHandler);
+  }
+
+  function closeStartScreen() {
+    const sb = document.querySelector('.start-button');
+    sb.remove();
+  }
+
+  function startClickHandler() {
+      closeStartScreen();
+      openGameScreen();
+  }
+
+  //=====[ Game ]======//
+
+  function openGameScreen() {
+    const tread = document.createElement('div');
+    tread.classList.add('game-tread');
+    document.body.appendChild(tread);
+
+  }
+
+  
 </script>
   
 </html>
